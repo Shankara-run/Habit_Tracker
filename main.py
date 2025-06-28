@@ -1,4 +1,22 @@
-Habits = []
+# Habit Tracker Application
+import json
+import os
+from datetime import date
+
+Habits_file = "habits.json"
+def load_habits():
+    if os.path.exists(Habits_file):
+        with open(Habits_file, "r") as f:
+            return json.load (f)
+    return []
+
+def save_habits():
+        with open(Habits_file,"w") as f:
+            json.dump(Habits,f)
+
+Habits = load_habits()
+
+
 def show_menu():
     print("\n Habit Tracker Menu:")
     print(" 1. Add a new Habit")
@@ -6,30 +24,48 @@ def show_menu():
     print(" 3. Mark a Habit as Completed")
     print(" 4. Exit")
 
-def get_choice():
+def Main_fuction_get_choice():
     while True:
         show_menu()
         choice = input("Enter your choice (1-4): ")
         if choice == "1":
-            habit = input ("Enter the new habit: ")
+            Name = input ("Enter the new habit: ")
+            habit = { "Name": Name , "Last_done" : None}
             Habits.append(habit)
-            print ( " Habit : " + habit + " has been added successfully!")
+            save_habits()
+            print(f"Habit : {habit["Name"]} has been added successfully!")
             
         elif choice == "2":
             print("\nList of Habits:")
             if Habits:
+                today= date.today().isoformat()
                 for habit in Habits:
-                    print("\n",habit)
+                    status = "Done !" if habit["Last_done"] == today else "Not done !"
+                    print(f"\n { habit["Name"]} : {status} ")
             else:   
                 print("No habits found. Please add a habit first.")     
                 
         elif choice == "3":
-            print("Mark Habit as Completed feature coming soon!")
+            print("\n Select a habit to mark as completed.")
+            for index, habit in enumerate(Habits):
+                print(f" {index+1}. {habit["Name"]} ")
+            try:
+                choice = int(input("Enter the number of habit "))-1
+                if 0 <= choice < len(Habits):
+                    Habits[choice]["Last_done"] = date.today().isoformat()
+                    save_habits()
+                    print(f"The Habit {Habits[choice]["Name"]} has been marked as done on {Habits[choice]["Last_done"]}")
+                else :
+                    print("Enter the correct number of the Habit that you want to mark as Done")
+            except ValueError:
+                print("Invalid number.")
+
         elif choice == "4":
             print("Exiting Habit Tracker. Goodbye!")
             break
         else:
             print("Invalid choice. Please try again.")
+2
 
 if __name__ == "__main__":
-        get_choice()
+        Main_fuction_get_choice()
