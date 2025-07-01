@@ -12,15 +12,15 @@ def load_habits():
 
 def save_habits():
         with open(Habits_file,"w") as f:
-            json.dump(Habits,f)
+            json.dump(Habits,f, indent=4)
 
 def calculate_streak(done_dates):
     current_day= date.today()
     streak =0 
     done_days_set = set (done_dates)
-    while current_day in done_days_set:
+    while current_day.isoformat() in done_days_set:
         streak += 1
-        Current_day -= timedelta(days=1)
+        current_day -= timedelta(days=1)
     return streak
 
 
@@ -43,7 +43,7 @@ def Main_fuction_get_choice():
             habit = { "Name": Name , "done_dates" : [] }
             Habits.append(habit)
             save_habits()
-            print(f"Habit : {habit["Name"]} has been added successfully!")
+            print(f"Habit : {habit['Name']} has been added successfully!")
             
         elif choice == "2":
             print("\nList of Habits:")
@@ -53,14 +53,14 @@ def Main_fuction_get_choice():
                     status = "Done !" if today in habit["done_dates"]  else "Not done !"
                     streak= calculate_streak(habit["done_dates"])
 
-                    print(f"\n { habit["Name"]} ( {status}, Streak :{streak} days")
+                    print(f"\n { habit['Name']} ( {status}, Streak :{streak} days)")
             else:   
                 print("No habits found. Please add a habit first.")     
                 
         elif choice == "3":
             print("\n Select a habit to mark as completed.")
             for index, habit in enumerate(Habits):
-                print(f" {index+1}. {habit["Name"]} ")
+                print(f" {index+1}. {habit['Name']} ")
             try:
                 choice = int(input("Enter the number of habit "))-1
                 if 0 <= choice < len(Habits):

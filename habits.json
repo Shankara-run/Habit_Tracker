@@ -1,1 +1,30 @@
-[{"Name": "Taking Bath", "done_dates": ["2025-07-01"]}, {"Name": "Brushing Teeth", "done_dates": ["2025-07-01"]}, {"Name": "Running in Treadmill", "done_dates": ["2025-07-01"]}, {"Name": "Eating Less food ", "done_dates": []}]
+[
+    {
+        "Name": "Taking Bath",
+        "done_dates": [
+            "2025-07-01"
+        ]
+    },
+    {
+        "Name": "Brushing teeth",
+        "done_dates": [
+            "2025-07-01"
+        ]
+    },
+    {
+        "Name": "Eating less",
+        "done_dates": []
+    },
+    {
+        "Name": "Coding everyday",
+        "done_dates": [
+            "2025-07-01"
+        ]
+    },
+    {
+        "Name": "Walking in treadmill",
+        "done_dates": [
+            "2025-07-01"
+        ]
+    }
+]
