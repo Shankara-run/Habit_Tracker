@@ -1,7 +1,7 @@
 # Habit Tracker Application
 import json
 import os
-from datetime import date
+from datetime import date, timedelta
 
 Habits_file = "habits.json"
 def load_habits():
@@ -13,6 +13,16 @@ def load_habits():
 def save_habits():
         with open(Habits_file,"w") as f:
             json.dump(Habits,f)
+
+def calculate_streak(done_dates):
+    current_day= date.today()
+    streak =0 
+    done_days_set = set (done_dates)
+    while current_day in done_days_set:
+        streak += 1
+        Current_day -= timedelta(days=1)
+    return streak
+
 
 Habits = load_habits()
 
@@ -30,7 +40,7 @@ def Main_fuction_get_choice():
         choice = input("Enter your choice (1-4): ")
         if choice == "1":
             Name = input ("Enter the new habit: ")
-            habit = { "Name": Name , "Last_done" : None}
+            habit = { "Name": Name , "done_dates" : [] }
             Habits.append(habit)
             save_habits()
             print(f"Habit : {habit["Name"]} has been added successfully!")
@@ -40,8 +50,10 @@ def Main_fuction_get_choice():
             if Habits:
                 today= date.today().isoformat()
                 for habit in Habits:
-                    status = "Done !" if habit["Last_done"] == today else "Not done !"
-                    print(f"\n { habit["Name"]} : {status} ")
+                    status = "Done !" if today in habit["done_dates"]  else "Not done !"
+                    streak= calculate_streak(habit["done_dates"])
+
+                    print(f"\n { habit["Name"]} ( {status}, Streak :{streak} days")
             else:   
                 print("No habits found. Please add a habit first.")     
                 
@@ -52,9 +64,13 @@ def Main_fuction_get_choice():
             try:
                 choice = int(input("Enter the number of habit "))-1
                 if 0 <= choice < len(Habits):
-                    Habits[choice]["Last_done"] = date.today().isoformat()
-                    save_habits()
-                    print(f"The Habit {Habits[choice]["Name"]} has been marked as done on {Habits[choice]["Last_done"]}")
+                    last_done= date.today().isoformat()
+                    if last_done not in Habits[choice]["done_dates"]:
+                        Habits[choice]["done_dates"].append(last_done)
+                        save_habits()
+                        print(f"The Habit {Habits[choice]['Name']} has been marked as done on {last_done}")
+                    else:
+                        print(f"Habit already marked as done!")
                 else :
                     print("Enter the correct number of the Habit that you want to mark as Done")
             except ValueError:
@@ -65,7 +81,7 @@ def Main_fuction_get_choice():
             break
         else:
             print("Invalid choice. Please try again.")
-2
+
 
 if __name__ == "__main__":
         Main_fuction_get_choice()
